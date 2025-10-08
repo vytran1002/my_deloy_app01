@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class RedirectController extends Controller
 {
-    public function __invoke(string $code)  {
-        $link = Link::where('code', $code)->firstOrFail();
+    public function redirect(string $code){
+        $link = Link::where('code',$code)->firstOrFail();
         $link->increment('clicks');
-        return redirect()->away($link->long_url,302);
+        return redirect()->away($link->long_url);
     }
 }

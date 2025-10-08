@@ -1,37 +1,37 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
 import { Link, router, useForm } from '@inertiajs/react';
 
-export default function Index({ links, q, base }) {
-    const { data, setData, post, processing, reset } = useForm({
-        long_url: ''
+export default function Index({links, q, base}) {
+    const { data, setData, post, processing } = useForm({
+        long_url: '',
     });
     const onSubmit = (e) => {
         e.preventDefault();
         post('/links', {
-            onSuccess: () => reset('long_url'),
+            onSuccess: () => reset('long_url')
         });
     };
     const search = (e) => {
         e.preventDefault();
-        const val = new FormData(e.target).get('q');
-        router.get('/', { q: val }, { preserveState: true });
+        const val = new FormData(e.target).get('q') || '';
+        router.get('/', { q: val }, { preserveState: true});
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     const remove = (id) => router.delete(`/links/${id}`);
 
     function labelText(label) {
-        if (label.includes('Previous') || label.includes('<<')) return '<<';
-        if (label.includes('Next') || label.includes('>>')) return '>>';
+        if(label.includes('previous') || label.includes('<<')) return '<<';
+        if(label.includes('next') || label.includes('>>')) return '>>';
         return label;
     }
-
     return (
         <div>
             <h1>Url Shorten App</h1>
-            <form onSubmit={onSubmit}>
-                <input type="url" placeholder="https://example.com/..." value={data.long_url} onChange={(e) => setData('long_url', e.target.value)} />
+            <form onSubmit={onSubmit} >
+                <input type="url" placeholder="https://example.com/..." value={data.long_url} 
+                onChange={(e) => setData('long_url', e.target.value)} />
                 <button disabled={processing}>Click to Shorten Url</button>
             </form>
 
@@ -53,15 +53,15 @@ export default function Index({ links, q, base }) {
                 <tbody>
                     {links.data.map((l) => (
                         <tr key={l.id}>
-                            <td className='long-url-cell'>
+                            <td>
                                 <a href={`${base}/r/${l.code}`} target="_blank" rel="noreferrer">
                                     {base}/r/{l.code}
                                 </a>
                             </td>
-                            <td>{l.long_url}</td>
+                            <td className='long-url-cell'>{l.long_url}</td>
                             <td>{l.clicks}</td>
                             <td>
-                                <button type="button" onClick={remove(l.id)}>
+                                <button type="button" onClick={remove}>
                                     Delete
                                 </button>
                             </td>
@@ -84,4 +84,3 @@ export default function Index({ links, q, base }) {
         </div>
     );
 }
-
