@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\LinkController;
-use App\Models\Link;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RedirectController;
 
